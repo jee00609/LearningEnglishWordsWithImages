@@ -4,10 +4,10 @@ import base64
 
 from typing import Dict
 
-def objectDetect():
+def objectDetect(imagefile):
     openApiURL = "http://aiopen.etri.re.kr:8000/ObjectDetect"
     accessKey = "api키"
-    imageFilePath = "image\\myPhoto.jpg"
+    imageFilePath = imagefile
     type = "jpg"
 
     file = open(imageFilePath, "rb")
@@ -31,16 +31,19 @@ def objectDetect():
     )
 
     result = json.loads(response.data.decode('utf-8'))
-
-    etricall = result['return_object']['data']
-
     predImage_list = []
     predImage_list=list()
 
+    if response.status == 200:
+        try :
+            etricall = result['return_object']['data']
 
-    for i in etricall:
-        predImage_list.append(i.get('class'))
+            for i in etricall:
+                predImage_list.append(i.get('class'))
+                predImage_list=list(set(predImage_list))
+            return predImage_list
 
-    predImage_list=list(set(predImage_list))
-
-    return predImage_list
+        except:
+            return predImage_list
+    else:
+        return predImage_list
