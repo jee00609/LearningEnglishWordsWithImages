@@ -2,15 +2,11 @@ import urllib3
 import json
 import base64
 
-import urllib3
-from typing import Dict
-
-def proCorrect(myScript):
-    openApiURL = "http://aiopen.etri.re.kr:8000/WiseASR/Pronunciation"
+def voiceRecognition(myaudioFile):
+    openApiURL = "http://aiopen.etri.re.kr:8000/WiseASR/Recognition"
     accessKey = "api키"
-    audioFilePath = "audio/test.raw"
+    audioFilePath = myaudioFile
     languageCode = "english"
-    script = myScript
 
     file = open(audioFilePath, "rb")
     audioContents = base64.b64encode(file.read()).decode("utf8")
@@ -20,7 +16,6 @@ def proCorrect(myScript):
         "access_key": accessKey,
         "argument": {
             "language_code": languageCode,
-            "script" : script,
             "audio": audioContents
         }
     }
@@ -32,18 +27,19 @@ def proCorrect(myScript):
         headers={"Content-Type": "application/json; charset=UTF-8"},
         body=json.dumps(requestJson)
     )
-
+    
     result = json.loads(response.data.decode('utf-8'))
+    etricall =""
     
     if response.status == 200:
         try :
-            score = result['return_object']['score']
-            score = round(score,2)
-            return score
+            etricall = result['return_object']['recognized']
+            etricall = etricall.rstrip('\n')
+            etricall = etricall.lstrip()
+            return etricall
 
         except:
-            score = -1
-            return score
+            return etricall
     else:
-        score = -1
-        return score
+        etricall = str(response.status)
+        return etricall

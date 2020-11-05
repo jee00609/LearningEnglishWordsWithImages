@@ -40,7 +40,8 @@ def objectDetect(imagefile):
 
             for i in etricall:
                 predImage_list.append(i.get('class'))
-                predImage_list=list(set(predImage_list))
+            predImage_list=list(set(predImage_list))
+            predImage_list.sort(key = len)
             return predImage_list
 
         except:
