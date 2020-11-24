@@ -41,3 +41,7 @@
 
 ### 동영상
 [요약 동영상](https://www.youtube.com/embed/wIovzodQKyA)
+
+### 비고
+
+   * [알고리즘 이미지](https://github.com/jee00609/LearningEnglishWordsWithImages/tree/master/Chart)
